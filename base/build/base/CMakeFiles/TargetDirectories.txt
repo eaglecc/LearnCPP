@@ -1,0 +1,3 @@
+/mnt/d/Project/CPP/CPPLearn/base/build/base/CMakeFiles/d01-hello.dir
+/mnt/d/Project/CPP/CPPLearn/base/build/base/CMakeFiles/edit_cache.dir
+/mnt/d/Project/CPP/CPPLearn/base/build/base/CMakeFiles/rebuild_cache.dir
