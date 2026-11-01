@@ -329,11 +329,11 @@ static_assert(std::is_same_v<std::remove_reference_t<decltype("abc")>,
 
 ### const / constexpr / auto
 
-（任务 2 待补）
+任务 2 的详细笔记见 [note_task2.md](note_task2.md)。
 
 ### 引用与指针
 
-（任务 3 待补）
+任务 3 的详细笔记见 [note_task3.md](note_task3.md)。
 
 ### 左值 / 右值
 

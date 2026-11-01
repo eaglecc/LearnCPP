@@ -5,8 +5,8 @@
 
 ## 今日目标
 
-- [ ] 说清基本类型的大小、对齐、初始化方式与窄化
-- [ ] 分清 `const` / `constexpr` / `auto`，能读懂 `const` 与指针组合
+- [x] 说清基本类型的大小、对齐、初始化方式与窄化
+- [x] 分清 `const` / `constexpr` / `auto`，能读懂 `const` 与指针组合
 - [ ] 分清引用与指针，知道各自适用场景和常见悬空问题
 - [ ] 对左值/右值有直觉（今天只要求“认识”，不要求完美转发）
 - [ ] 掌握文件权限、进程、信号，能用 `strace` 观察程序行为
@@ -43,18 +43,20 @@
 在 `types.cpp` 中继续：
 
 1. **const 与指针**，写代码并注释每个声明的含义（从右往左读）：
-
+   
    ```cpp
    int value = 1;
    const int* p1 = &value;        // ?
    int* const p2 = &value;        // ?
    const int* const p3 = &value;  // ?
    ```
-
+   
    分别尝试通过它们修改值 / 修改指针指向，把编译不过的行注释掉并写明原因。
 
 2. **constexpr**：写 `constexpr int square(int x) { return x * x; }`，用 `static_assert(square(5) == 25)` 验证编译期求值；再写一个**不能**是 `constexpr` 的函数（例如含 `std::cout`），观察报错。
+
 3. **auto 的坑**：
+   
    - `const int ci = 1; auto a = ci;` —— `a` 是 `const int` 吗？
    - `auto& r = ci;` 与 `auto r2 = ci;` 的区别；
    - `auto` 对数组退化的影响：`int arr[5]; auto p = arr;` 的 `p` 类型是什么？
@@ -79,9 +81,11 @@
 只要求建立直觉，写进笔记即可，不写复杂代码：
 
 1. 左值：有身份（能取地址）、能出现在赋值左边；
-2. 右值：临时对象、字面量，通常不能取地址；
-3. 例子：
 
+2. 右值：临时对象、字面量，通常不能取地址；
+
+3. 例子：
+   
    ```cpp
    int x = 1;   // x 是左值，1 是右值
    int& r = x;  // 左值引用
