@@ -337,7 +337,7 @@ static_assert(std::is_same_v<std::remove_reference_t<decltype("abc")>,
 
 ### 左值 / 右值
 
-（任务 4 待补）
+任务 4 的详细笔记见 [note_task4.md](note_task4.md)。
 
 ### 进程与信号
 
