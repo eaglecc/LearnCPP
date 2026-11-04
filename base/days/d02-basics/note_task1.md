@@ -341,7 +341,7 @@ static_assert(std::is_same_v<std::remove_reference_t<decltype("abc")>,
 
 ### 进程与信号
 
-（任务 5 待补）
+任务 5 的详细笔记见 [note_task5.md](note_task5.md)。
 
 ## 易错点 / UB（附最小复现代码）
 
