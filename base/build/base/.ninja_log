@@ -1,3 +1,8 @@
 # ninja log v5
-10	358	1793288433309006800	CMakeFiles/d01-hello.dir/days/d01-toolchain/hello.cpp.o	a5d3c0eb45e33bc2
 436	705	1793288433685434100	d01-hello	26ad53e0beac025e
+10	358	1793288433309006800	CMakeFiles/d01-hello.dir/days/d01-toolchain/hello.cpp.o	a5d3c0eb45e33bc2
+9	24	0	clean	a31eedcededa8236
+14	374	1793893635160104000	CMakeFiles/d02-types.dir/days/d02-basics/code/types.cpp.o	13b29875b92531a0
+16	389	1793893635164244600	CMakeFiles/d02-pointers.dir/days/d02-basics/code/pointers.cpp.o	e1889291183b870c
+383	523	1793893635311403900	d02-types	173cc83443696eae
+393	529	1793893635312205600	d02-pointers	2d11ba38604e0f6b

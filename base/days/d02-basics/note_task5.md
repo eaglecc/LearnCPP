@@ -15,6 +15,7 @@
 - **信号**：`SIGINT=2`（Ctrl+C）、`SIGTERM=15`（可捕获的终止）、`SIGKILL=9`（不可捕获）、`SIGHUP=1`、`SIGPIPE=13`。
 - **`SIGTERM` vs `SIGKILL`**：前者可以被捕获/忽略/阻塞，允许清理；后者由内核强制终止，不能捕获/忽略/阻塞。
 - **`strace`**：`-e trace=openat` 看打开了哪些文件；`-c` 看 syscall 统计；`write(1, ...)` 的 `1` 是 stdout 的文件描述符。
+- **日常命令**：真正每天会敲的命令和组合见 5.6。
 
 ## 5.1 Shell 与文件
 
@@ -816,3 +817,262 @@ openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libgcc_s.so.1", O_RDONLY|O_CLOEXEC) = 3
 - `nohup` 和 `disown` 的区别。
 - `strace -e trace=openat` 怎么定位文件；`write(1, ...)` 的 `1` 是什么。
 - `strace` 默认输出与 `strace -c` 的差异；`calls`/`errors` 两列的含义。
+- 5.6 的第一梯队和 5.6.9 的 10 组命令，能否不看笔记写出来。
+
+## 5.6 日常开发最常用命令
+
+> 5.1–5.3 讲原理和实验；这一节是“每天真正会敲”的版本，按使用频率排序。
+> 默认在项目根目录执行。更完整的原理回到对应小节看。
+
+### 5.6.1 第一梯队：每天都用
+
+| 场景 | 命令 | 说明 |
+|---|---|---|
+| 我在哪 | `pwd` | 打印当前绝对路径 |
+| 看目录 | `ls -lah` | 长格式、含隐藏文件、大小人类可读 |
+| 切目录 | `cd -` | 回到上一个目录；`cd ~` 回家目录 |
+| 看短文件 | `cat file` | 内容直接刷到终端 |
+| 看长文件 | `less -N file` | 分页；`/关键词` 搜索，`n` 下一个，`q` 退出，`F` 跟踪 |
+| 看头/尾 | `head -n 50 file`、`tail -n 50 file` | 前 50 行 / 后 50 行 |
+| 实时日志 | `tail -F app.log` | 文件轮转后仍继续跟踪（比 `-f` 稳） |
+| 找文件 | `find . -name '*.cpp'` | 按名字、类型、时间找 |
+| 找内容 | `grep -rn --include='*.cpp' 'TODO' .` | 递归、带行号、限定后缀 |
+| 找命令 | `command -v cmake` | 看命令是否存在、实际走哪个路径 |
+| 建目录 | `mkdir -p a/b/c` | 父目录不存在时自动创建 |
+| 复制 | `cp -r src dst` | 目录必须加 `-r` |
+| 移动/改名 | `mv old new` | 同一文件系统内只是改目录项 |
+| 删除 | `rm -rf build` | 不可恢复；执行前先 `ls build` |
+| 软链接 | `ln -s /real/path link` | 类似快捷方式；注意用绝对路径更稳 |
+| 改权限 | `chmod 755 run.sh`、`chmod +x run.sh` | 数值写法见 5.1.3 |
+| 改归属 | `sudo chown -R me:me dir` | 递归改 owner/group |
+| 看磁盘 | `df -h`、`du -sh *` | 分区剩余空间 / 当前目录各项占用 |
+| 看进程 | `ps -o pid,ppid,stat,cmd -p PID` | 单进程详情；`ps aux` 看全部 |
+| 找进程 | `pgrep -af app` | 比 `ps aux` 再 `grep` 干净，不会匹配到自己 |
+| 结束进程 | `kill -TERM PID` | 先 TERM 给清理机会，最后才 `kill -9` |
+| 看端口 | `ss -ltnp` | 谁在监听哪个 TCP 端口 |
+| 看退出码 | `echo $?` | 0 成功，非 0 失败 |
+| 看环境变量 | `env`、`echo "$PATH"` | 排查“命令找不到”的第一步 |
+
+### 5.6.2 搜索与查看：最常用的组合
+
+```bash
+# 1. 递归搜代码，排除 build 目录
+grep -rn --include='*.cpp' --include='*.h' --exclude-dir=build 'TODO' .
+
+# 2. 只搜指定目录
+grep -rn 'process' src include
+
+# 3. 装了 ripgrep 后更快；默认尊重 .gitignore
+rg -n 'TODO' -g '*.cpp' -g '!build/**'
+
+# 4. 按文件名找，并跳过 build
+find . -path ./build -prune -o -type f -name '*.cpp' -print
+
+# 5. 最近 24 小时修改过的文件
+find . -type f -name '*.cpp' -mtime -1
+
+# 6. 统计代码行数；-0 正确处理带空格的文件名
+find . -name '*.cpp' -print0 | xargs -0 -r wc -l
+find . -name '*.cpp' -exec wc -l {} +
+
+# 7. 看某文件某几行
+sed -n '40,60p' file.cpp
+```
+
+- `grep -r` 会跟进软链接吗？默认不跟；需要时加 `-R`。
+- `find -mtime -1` 是“小于 1 天”，`+1` 是“大于 1 天”；按分钟用 `-mmin`。
+- `sed -n '40,60p'` 只是查看；要改文件加 `-i`，但先备份或先不加 `-i` 试跑。
+
+### 5.6.3 日志、管道与重定向
+
+```bash
+# 实时看日志并只留错误/警告；--line-buffered 防止 grep 缓冲导致日志不刷新
+tail -F app.log | grep --line-buffered -E 'ERROR|WARN'
+
+# 屏幕看的同时追加到文件
+./app 2>&1 | tee -a run.log
+
+# stdout 和 stderr 都进同一个文件（顺序不能反）
+./app > out.log 2>&1
+./app &> out.log            # bash 简写
+
+# 只要 stderr
+./app 2> err.log
+
+# 丢弃所有输出
+./app > /dev/null 2>&1
+
+# 只保留最后 1000 行做备份
+tail -n 1000 app.log > app.log.bak
+
+# 计时
+time ./app
+
+# 周期性观察
+watch -n 1 'ss -ltnp'
+```
+
+- `2>&1` 必须放在 `> out.log` 后面：先确定 stdout 去哪，再把 stderr 复制过去。
+- `tee` 默认覆盖，追加要 `-a`。
+- `time` 是 shell 关键字；要更详细的内存统计用 `/usr/bin/time -v ./app`。
+
+### 5.6.4 进程、端口与后台任务
+
+```bash
+# 先确认进程；-a 显示完整命令行，-f 匹配完整命令行
+pgrep -af 'my_server'
+
+# 确认后再杀；先 TERM
+kill -TERM PID
+kill -0 PID && echo alive || echo gone
+
+# 按名字批量杀（危险：一定先 pgrep 看清单）
+pkill -TERM -f 'my_server'
+
+# 端口占用：ss 是 iproute2 自带，通常比 netstat 更该先试
+ss -ltnp | grep ':8080'
+ss -ltnp 'sport = :8080'
+lsof -i :8080                # 装了 lsof 时；看别人的进程可能要 sudo
+
+# 后台运行并脱离终端
+nohup ./server > server.log 2>&1 &
+disown
+
+# 完全脱离会话（不依赖 nohup 的 SIGHUP 忽略）
+setsid ./server > server.log 2>&1 < /dev/null &
+
+# 当前 shell 的作业控制
+jobs -l
+fg %1
+bg %1
+```
+
+- `ss -ltnp` 的 `-p` 看别的用户的进程通常要 `sudo`。
+- `pgrep -f` 的模式如果写得太宽，可能匹配到自己的 shell；先 `pgrep -af` 核对。
+- `nohup` 只解决 SIGHUP 和输出重定向，不是完整的 daemon 化；长期服务用 `systemd` 或容器。
+
+### 5.6.5 编译、构建与调试
+
+```bash
+# 单文件严格编译
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Werror main.cpp -o main
+
+# 编译成功才运行，并打印退出码
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion main.cpp -o main \
+  && ./main; echo "exit=$?"
+
+# CMake 标准三步（任务 6 会系统整理）
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build -j"$(nproc)"
+ctest --test-dir build --output-on-failure
+
+# 看文件类型、依赖的动态库
+file ./main
+ldd ./main
+
+# AddressSanitizer + UBSan 构建
+g++ -std=c++20 -g -fsanitize=address,undefined main.cpp -o main_asan
+
+# 调试
+gdb --args ./main arg1 arg2
+```
+
+- `nproc` 返回可用 CPU 核数；`-j"$(nproc)"` 并行编译。
+- `ldd` 只对自己编译/可信的二进制用。
+- ASan 和 UBSan 只用于调试构建，不要带进发布版本。
+
+### 5.6.6 传输、压缩、远程
+
+```bash
+# 远程登录；-L 把本地 8080 转发到远端 localhost:80
+ssh user@host
+ssh -L 8080:localhost:80 user@host
+
+# 传文件
+scp file user@host:/path/
+scp -r dir user@host:/path/
+rsync -av --progress dir/ user@host:/path/
+
+# 打包 / 解包 / 只看内容
+tar -czf archive.tar.gz dir/
+tar -xzf archive.tar.gz
+tar -tzf archive.tar.gz | head
+
+# 下载
+curl -fL URL -o file
+curl -I URL                 # 只看响应头
+
+# 服务器上管理服务
+systemctl status my.service
+journalctl -u my.service -f
+
+# 长时间任务用 tmux，断线不丢
+tmux new -s work
+tmux attach -t work         # 或 tmux a
+# 先按 Ctrl+B，再按 D 脱离
+```
+
+- `rsync` 源路径末尾的 `/` 有含义：`dir/` 传“目录里的内容”，`dir` 传“目录本身”。
+- WSL 默认不一定启用 systemd；`systemctl` 在普通 WSL 里可能不可用。
+- `curl -f` 遇到 HTTP 4xx/5xx 返回非 0，脚本里比裸 `curl` 安全。
+
+### 5.6.7 系统状态一眼看
+
+```bash
+uptime                 # 开机时长、负载
+free -h                # 内存
+df -h                  # 各分区剩余空间
+du -sh * | sort -h     # 当前目录谁最占空间
+top                    # 实时进程（htop 更好用，但可能没装）
+nproc                  # CPU 核数
+uname -a               # 内核与架构
+```
+
+### 5.6.8 危险命令与自保
+
+1. **`rm -rf` 前先打印再删**：变量可能为空，`rm -rf "$dir"/` 在 `dir` 为空时会变成危险路径。
+
+   ```bash
+   dir=build
+   echo "about to remove: $dir"
+   [ -n "$dir" ] && [ "$dir" != "/" ] && rm -rf -- "$dir"
+   ```
+
+   脚本里加 `set -u`，让未定义变量直接报错。
+
+2. **`sudo echo x > /etc/file` 不生效**：重定向是当前 shell 做的，不是 `sudo` 做的。用：
+
+   ```bash
+   echo 'x' | sudo tee /etc/file > /dev/null
+   ```
+
+3. **`>` 会立刻截断文件**：哪怕右边的命令失败，原内容也没了。重要文件先备份或写临时文件再 `mv`。
+
+4. **`find ... -delete` 先用 `-print` 试跑**：确认清单再换成 `-delete`。
+
+5. **`xargs` 不带 `-0` 会被空格和换行坑**：和 `find -print0` 配对使用。
+
+6. **`chmod -R 777` 不是“解决问题”**：它把权限模型整个废掉，还会留下安全隐患；按需给 `u/g/o` 最小权限。
+
+7. **`kill -9` 是最后手段**：它不给进程清理机会，可能留下锁文件、半写文件、未 flush 的日志。
+
+8. **`git clean -fdx`、`git reset --hard` 会丢未跟踪/未提交内容**：执行前先 `git status`，不确定就先 `git stash -u`（Git 部分任务 6 再展开）。
+
+### 5.6.9 只记这 10 个也能干活
+
+如果今天只背 10 条，按这个顺序：
+
+```text
+pwd / ls -lah / cd -
+less -N file / tail -F app.log
+grep -rn --include='*.cpp' 'pattern' .
+find . -name '*.cpp'
+cp -r / mv / rm -rf / mkdir -p
+chmod / chown
+ps -o pid,ppid,stat,cmd -p PID / pgrep -af / kill -TERM
+ss -ltnp
+> out.log 2>&1 / tee -a / |
+ssh / scp / rsync
+```
+
+这 10 组覆盖了日常 80% 的操作；剩下的 `strace`、作业控制、`umount` 等按需查。
