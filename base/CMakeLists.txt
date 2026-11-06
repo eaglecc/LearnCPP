@@ -16,3 +16,13 @@ add_executable(d02-pointers days/d02-basics/code/pointers.cpp)
 target_compile_features(d02-pointers PRIVATE cxx_std_20)
 target_compile_options(d02-pointers PRIVATE
     -Wall -Wextra -Wpedantic -Wconversion -Werror)
+
+add_executable(d03-funcs days/d03-functions-gdb/code/overload.cpp)
+target_compile_features(d03-funcs PRIVATE cxx_std_20)
+target_compile_options(d03-funcs PRIVATE
+    -Wall -Wextra -Wpedantic -Wconversion -Werror)
+
+add_executable(d03-defaults days/d03-functions-gdb/code/default_args.cpp)
+target_compile_features(d03-defaults PRIVATE cxx_std_20)
+target_compile_options(d03-defaults PRIVATE
+    -Wall -Wextra -Wpedantic -Wconversion -Werror)

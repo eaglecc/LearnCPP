@@ -1,0 +1,7 @@
+/mnt/d/Project/CPP/CPPLearn/base/build/base/build/base/CMakeFiles/d01-hello.dir
+/mnt/d/Project/CPP/CPPLearn/base/build/base/build/base/CMakeFiles/d02-types.dir
+/mnt/d/Project/CPP/CPPLearn/base/build/base/build/base/CMakeFiles/d02-pointers.dir
+/mnt/d/Project/CPP/CPPLearn/base/build/base/build/base/CMakeFiles/d03-funcs.dir
+/mnt/d/Project/CPP/CPPLearn/base/build/base/build/base/CMakeFiles/d03-defaults.dir
+/mnt/d/Project/CPP/CPPLearn/base/build/base/build/base/CMakeFiles/edit_cache.dir
+/mnt/d/Project/CPP/CPPLearn/base/build/base/build/base/CMakeFiles/rebuild_cache.dir
