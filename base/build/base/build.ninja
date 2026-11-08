@@ -126,34 +126,34 @@ build d02-pointers: CXX_EXECUTABLE_LINKER__d02-pointers_ CMakeFiles/d02-pointers
   TARGET_PDB = d02-pointers.dbg
 
 # =============================================================================
-# Object build statements for EXECUTABLE target d03-funcs
+# Object build statements for EXECUTABLE target d03-overload
 
 
 #############################################
-# Order-only phony target for d03-funcs
+# Order-only phony target for d03-overload
 
-build cmake_object_order_depends_target_d03-funcs: phony || CMakeFiles/d03-funcs.dir
+build cmake_object_order_depends_target_d03-overload: phony || CMakeFiles/d03-overload.dir
 
-build CMakeFiles/d03-funcs.dir/days/d03-functions-gdb/code/overload.cpp.o: CXX_COMPILER__d03-funcs_unscanned_ /mnt/d/Project/CPP/CPPLearn/base/days/d03-functions-gdb/code/overload.cpp || cmake_object_order_depends_target_d03-funcs
-  DEP_FILE = CMakeFiles/d03-funcs.dir/days/d03-functions-gdb/code/overload.cpp.o.d
+build CMakeFiles/d03-overload.dir/days/d03-functions-gdb/code/overload.cpp.o: CXX_COMPILER__d03-overload_unscanned_ /mnt/d/Project/CPP/CPPLearn/base/days/d03-functions-gdb/code/overload.cpp || cmake_object_order_depends_target_d03-overload
+  DEP_FILE = CMakeFiles/d03-overload.dir/days/d03-functions-gdb/code/overload.cpp.o.d
   FLAGS = -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Werror
-  OBJECT_DIR = CMakeFiles/d03-funcs.dir
-  OBJECT_FILE_DIR = CMakeFiles/d03-funcs.dir/days/d03-functions-gdb/code
+  OBJECT_DIR = CMakeFiles/d03-overload.dir
+  OBJECT_FILE_DIR = CMakeFiles/d03-overload.dir/days/d03-functions-gdb/code
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target d03-funcs
+# Link build statements for EXECUTABLE target d03-overload
 
 
 #############################################
-# Link the executable d03-funcs
+# Link the executable d03-overload
 
-build d03-funcs: CXX_EXECUTABLE_LINKER__d03-funcs_ CMakeFiles/d03-funcs.dir/days/d03-functions-gdb/code/overload.cpp.o
-  OBJECT_DIR = CMakeFiles/d03-funcs.dir
+build d03-overload: CXX_EXECUTABLE_LINKER__d03-overload_ CMakeFiles/d03-overload.dir/days/d03-functions-gdb/code/overload.cpp.o
+  OBJECT_DIR = CMakeFiles/d03-overload.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_FILE = d03-funcs
-  TARGET_PDB = d03-funcs.dbg
+  TARGET_FILE = d03-overload
+  TARGET_PDB = d03-overload.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target d03-defaults
@@ -184,6 +184,102 @@ build d03-defaults: CXX_EXECUTABLE_LINKER__d03-defaults_ CMakeFiles/d03-defaults
   PRE_LINK = :
   TARGET_FILE = d03-defaults
   TARGET_PDB = d03-defaults.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target d03-namespaces
+
+
+#############################################
+# Order-only phony target for d03-namespaces
+
+build cmake_object_order_depends_target_d03-namespaces: phony || CMakeFiles/d03-namespaces.dir
+
+build CMakeFiles/d03-namespaces.dir/days/d03-functions-gdb/code/namespaces.cpp.o: CXX_COMPILER__d03-namespaces_unscanned_ /mnt/d/Project/CPP/CPPLearn/base/days/d03-functions-gdb/code/namespaces.cpp || cmake_object_order_depends_target_d03-namespaces
+  DEP_FILE = CMakeFiles/d03-namespaces.dir/days/d03-functions-gdb/code/namespaces.cpp.o.d
+  FLAGS = -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Werror
+  OBJECT_DIR = CMakeFiles/d03-namespaces.dir
+  OBJECT_FILE_DIR = CMakeFiles/d03-namespaces.dir/days/d03-functions-gdb/code
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target d03-namespaces
+
+
+#############################################
+# Link the executable d03-namespaces
+
+build d03-namespaces: CXX_EXECUTABLE_LINKER__d03-namespaces_ CMakeFiles/d03-namespaces.dir/days/d03-functions-gdb/code/namespaces.cpp.o
+  OBJECT_DIR = CMakeFiles/d03-namespaces.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = d03-namespaces
+  TARGET_PDB = d03-namespaces.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target d03-linkage
+
+
+#############################################
+# Order-only phony target for d03-linkage
+
+build cmake_object_order_depends_target_d03-linkage: phony || CMakeFiles/d03-linkage.dir
+
+build CMakeFiles/d03-linkage.dir/days/d03-functions-gdb/code/link_main.cpp.o: CXX_COMPILER__d03-linkage_unscanned_ /mnt/d/Project/CPP/CPPLearn/base/days/d03-functions-gdb/code/link_main.cpp || cmake_object_order_depends_target_d03-linkage
+  DEP_FILE = CMakeFiles/d03-linkage.dir/days/d03-functions-gdb/code/link_main.cpp.o.d
+  FLAGS = -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Werror
+  OBJECT_DIR = CMakeFiles/d03-linkage.dir
+  OBJECT_FILE_DIR = CMakeFiles/d03-linkage.dir/days/d03-functions-gdb/code
+
+build CMakeFiles/d03-linkage.dir/days/d03-functions-gdb/code/link_stats.cpp.o: CXX_COMPILER__d03-linkage_unscanned_ /mnt/d/Project/CPP/CPPLearn/base/days/d03-functions-gdb/code/link_stats.cpp || cmake_object_order_depends_target_d03-linkage
+  DEP_FILE = CMakeFiles/d03-linkage.dir/days/d03-functions-gdb/code/link_stats.cpp.o.d
+  FLAGS = -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Werror
+  OBJECT_DIR = CMakeFiles/d03-linkage.dir
+  OBJECT_FILE_DIR = CMakeFiles/d03-linkage.dir/days/d03-functions-gdb/code
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target d03-linkage
+
+
+#############################################
+# Link the executable d03-linkage
+
+build d03-linkage: CXX_EXECUTABLE_LINKER__d03-linkage_ CMakeFiles/d03-linkage.dir/days/d03-functions-gdb/code/link_main.cpp.o CMakeFiles/d03-linkage.dir/days/d03-functions-gdb/code/link_stats.cpp.o
+  OBJECT_DIR = CMakeFiles/d03-linkage.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = d03-linkage
+  TARGET_PDB = d03-linkage.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target d03-debug
+
+
+#############################################
+# Order-only phony target for d03-debug
+
+build cmake_object_order_depends_target_d03-debug: phony || CMakeFiles/d03-debug.dir
+
+build CMakeFiles/d03-debug.dir/days/d03-functions-gdb/code/debug_me.cpp.o: CXX_COMPILER__d03-debug_unscanned_ /mnt/d/Project/CPP/CPPLearn/base/days/d03-functions-gdb/code/debug_me.cpp || cmake_object_order_depends_target_d03-debug
+  DEP_FILE = CMakeFiles/d03-debug.dir/days/d03-functions-gdb/code/debug_me.cpp.o.d
+  FLAGS = -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Werror -g -O0
+  OBJECT_DIR = CMakeFiles/d03-debug.dir
+  OBJECT_FILE_DIR = CMakeFiles/d03-debug.dir/days/d03-functions-gdb/code
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target d03-debug
+
+
+#############################################
+# Link the executable d03-debug
+
+build d03-debug: CXX_EXECUTABLE_LINKER__d03-debug_ CMakeFiles/d03-debug.dir/days/d03-functions-gdb/code/debug_me.cpp.o
+  OBJECT_DIR = CMakeFiles/d03-debug.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = d03-debug
+  TARGET_PDB = d03-debug.dbg
 
 
 #############################################
@@ -219,7 +315,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Folder: /mnt/d/Project/CPP/CPPLearn/base/build/base
 
-build all: phony d01-hello d02-types d02-pointers d03-funcs d03-defaults
+build all: phony d01-hello d02-types d02-pointers d03-overload d03-defaults d03-namespaces d03-linkage d03-debug
 
 # =============================================================================
 # Built-in targets

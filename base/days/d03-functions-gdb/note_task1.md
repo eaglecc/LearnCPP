@@ -5,6 +5,9 @@
 > 构建目录：`~/build/base`
 > targets：`d03-funcs`（`overload.cpp`）、`d03-defaults`（`default_args.cpp`）。
 >
+> 注：任务 6 按任务书把 target `d03-funcs` 统一改名为 `d03-overload`；
+> 本笔记保留任务 1 当时的 target 名和输出作为历史记录。
+>
 > 本笔记记录的是实际编译、运行和失败实验的结果，不是凭记忆写的“应该怎样”。
 
 ## 0. 速查
